@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nexus - Your Unified Productivity Hub
+
+Nexus is a full-stack Next.js application that serves as a unified productivity hub. It integrates natively with Google Calendar and Google Tasks to bring your schedule and to-dos into a single, streamlined dashboard.
+
+## Tech Stack
+
+- **Framework:** [Next.js](https://nextjs.org/) (App Router)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **UI Components:** [shadcn/ui](https://ui.shadcn.com/)
+- **Backend:** [Supabase](https://supabase.io/) (Auth & Database)
+- **APIs:**
+  - [Google Calendar API](https://developers.google.com/calendar/api)
+  - [Google Tasks API](https://developers.google.com/tasks/reference/rest)
+- **Icons:** [Lucide React](https://lucide.dev/guide/packages/lucide-react)
 
 ## Getting Started
 
-First, run the development server:
+To get a local copy up and running, follow these simple steps.
+
+### Prerequisites
+
+- Node.js (v18 or later)
+- npm, yarn, or pnpm
+
+### Installation
+
+1. **Clone the repo**
+   ```sh
+   git clone https://github.com/your_username/nexus.git
+   ```
+2. **Install NPM packages**
+   ```sh
+   npm install
+   ```
+3. **Set up your environment variables**
+
+   Create a `.env.local` file in the root of the project and add your Supabase project URL and anon key:
+
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your-supabase-project-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+   ```
+
+   To get these keys, you need to:
+   - Create a new project on [Supabase](https://supabase.com).
+   - In your Supabase project, go to **Authentication** > **Providers** and enable **Google**.
+   - You will need to get the **Client ID** and **Client Secret** from the [Google API Console](https://console.developers.google.com/).
+   - Make sure to add the correct callback URL in your Google API Console credentials. You can find the callback URL in your Supabase project's Google authentication settings.
+
+### Running the Development Server
+
+Once you have set up your environment variables, you can run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Phases
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The development of this project is divided into the following phases:
 
-## Learn More
+- **Phase 1: Project Initialization & Auth:** Setting up the Next.js project, configuring Supabase authentication with Google, and creating the basic layout.
+- **Phase 2: The Unified Dashboard UI:** Building the 3-column dashboard with a calendar, tasks list, and reminders.
+- **Phase 3: Google Integration (Server Actions):** Fetching and posting data to Google Calendar and Google Tasks.
+- **Phase 4: Smart Reminders:** Implementing browser-based notifications and a unified timeline.
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
