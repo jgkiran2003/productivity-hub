@@ -1,5 +1,6 @@
 import UnifiedTimeline from "./components/UnifiedTimeline";
-import { sampleEvents, sampleTasks } from "../data/sampleData"; // Import sample data
+import { sampleEvents, sampleTasks } from "../data/sampleData";
+import GoogleSignInButton from "./components/GoogleSignInButton";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       {/* Right: Info Panel */}
       <aside className="w-1/5 bg-white/10 backdrop-blur-lg rounded-lg m-2 p-4">
         {/* Content for Info Panel will go here */}
+        <GoogleSignInButton />
       </aside>
     </div>
   );
