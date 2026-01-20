@@ -1,7 +1,5 @@
-// components/UnifiedTimeline.tsx
-import { cn } from "@/lib/utils";
 import { CalendarIcon, CheckCircle2 } from "lucide-react";
-import { Event, Task, TimelineItem } from "../../types"; // Import Event, Task, and TimelineItem interfaces
+import { Event, Task, TimelineItem } from "../../types";
 
 interface UnifiedTimelineProps {
   events: Event[];
@@ -23,16 +21,11 @@ export default function UnifiedTimeline({ events, tasks }: UnifiedTimelineProps)
   );
 
   return (
-    <div className="space-y-4 p-6 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10">
-      <h2 className="text-xl font-bold text-pickleball-yellow">Your Timeline</h2>
-      <div className="relative border-l-2 border-pickleball-green/30 ml-3 pl-6 space-y-8">
-        {mergedData.map((item: TimelineItem) => ( // Explicitly type item
+    <div className="space-y-4 p-6 bg-white/20 rounded-2xl">
+      <h2 className="text-xl font-bold">Your Timeline</h2>
+      <div className="relative border-l-2 ml-3 pl-6 space-y-8">
+        {mergedData.map((item: TimelineItem) => (
           <div key={item.id} className="relative">
-            {/* The Timeline Dot */}
-            <div className={cn(
-              "absolute -left-[31px] mt-1.5 w-4 h-4 rounded-full border-2 bg-slate-900",
-              item.type === 'event' ? "border-pickleball-green" : "border-pickleball-yellow"
-            )} />
             
             <div className="flex flex-col">
               <span className="text-xs font-mono text-slate-400">

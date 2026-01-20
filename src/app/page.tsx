@@ -1,5 +1,5 @@
 import UnifiedTimeline from "./components/UnifiedTimeline";
-import { Event, Task } from "../types"; // Import Event and Task interfaces
+import { Event, Task } from "../types";
 
 export default function Home() {
   const sampleEvents: Event[] = [

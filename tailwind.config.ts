@@ -9,8 +9,6 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        "pickleball-yellow": "#FFD700", // Example yellow color
-        "pickleball-green": "#7CFC00",  // Example green color
       },
     },
   },
