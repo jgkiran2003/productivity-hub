@@ -60,25 +60,24 @@ export default function GoogleTasksColumn() {
       {tasks.length === 0 ? (
         <p>No tasks found.</p>
       ) : (
-          <ul className="space-y-3"> {/* Added space between task items */}
-            {tasks.map((task) => (
-              <li key={task.id} className="relative p-3 bg-white/10 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
-                {task.status === 'completed' && (
-                  <div className="absolute top-0 left-0 w-full h-full bg-green-500/10 rounded-lg flex items-center justify-center pointer-events-none">
-                    <span className="text-green-500 text-lg font-bold">✓ COMPLETED</span>
-                  </div>
-                )}
-                <h3 className="font-semibold text-lg text-white mb-1">{task.title}</h3>
-                {task.notes && <p className="text-sm text-gray-300 truncate mb-1">{task.notes}</p>}
-                {task.due && (
-                  <p className="text-xs text-gray-400 mb-1">
-                    Due: {new Date(task.due).toLocaleDateString()}
-                  </p>
-                )}
-                <p className="text-xs text-gray-400">List: {task.taskListTitle}</p>
-              </li>
-            ))}
-          </ul>
+        <ul className="space-y-3">
+          {tasks.map((task) => (
+            <li key={task.id} className="relative p-3 bg-white/10 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+              {task.status === 'completed' && (
+                <div className="absolute top-0 left-0 w-full h-full bg-green-500/10 rounded-lg flex items-center justify-center pointer-events-none">
+                  <span className="text-green-500 text-lg font-bold">✓ COMPLETED</span>
+                </div>
+              )}
+              <h3 className="font-semibold text-lg text-white mb-1">{task.title}</h3>
+              {task.notes && <p className="text-sm text-gray-300 truncate mb-1">{task.notes}</p>}
+              {task.due && (
+                <p className="text-xs text-gray-400 mb-1">
+                  Due: {new Date(task.due).toLocaleDateString()}
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
