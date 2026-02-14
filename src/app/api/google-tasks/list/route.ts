@@ -85,9 +85,7 @@ export async function GET() {
     for (const taskList of taskLists) {
       if (taskList.id) {
         const tasksResponse = await tasksApi.tasks.list({
-          tasklist: taskList.id,
-          showCompleted: false,
-          showHidden: false,
+          tasklist: taskList.id
         });
         const tasks = tasksResponse.data.items || [];
         allTasks = allTasks.concat(tasks.map(task => ({ ...task, taskListTitle: taskList.title })));
