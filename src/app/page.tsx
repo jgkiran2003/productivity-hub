@@ -2,13 +2,19 @@ import UnifiedTimeline from "./components/UnifiedTimeline";
 import { sampleEvents, sampleTasks } from "../data/sampleData";
 import GoogleSignInButton from "./components/GoogleSignInButton";
 import GoogleTasksColumn from "./components/GoogleTasksColumn";
+import GoogleCalendarColumn from "./components/GoogleCalendarColumn";
 
 export default function Home() {
   return (
     <div className="flex h-screen bg-black text-white">
       {/* Left: Nav Sidebar */}
-      <aside className="w-2/5 bg-white/10 backdrop-blur-lg rounded-lg m-2 p-4">
-        < GoogleTasksColumn />
+      <aside className="w-2/5 bg-white/10 backdrop-blur-lg rounded-2xl m-2 p-4 flex flex-col space-y-4">
+        <div className="flex-1 overflow-hidden">
+          <GoogleTasksColumn />
+        </div>
+        <div className="flex-1 overflow-hidden">
+          <GoogleCalendarColumn />
+        </div>
       </aside>
 
       {/* Center: Unified Scrollable Timeline */}
