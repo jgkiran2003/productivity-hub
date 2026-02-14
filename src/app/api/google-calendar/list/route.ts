@@ -78,10 +78,9 @@ export async function GET() {
 
   try {
     const response = await calendar.events.list({
-      calendarId: 'primary', // 'primary' refers to the user's primary calendar
+      calendarId: 'primary',
       timeMin: (new Date()).toISOString(),
       maxResults: 10,
-      singleEvents: true,
       orderBy: 'startTime',
     });
 
