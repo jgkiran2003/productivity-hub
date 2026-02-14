@@ -5,11 +5,13 @@ export interface GoogleTaskResource {
   notes?: string;
   status: 'needsAction' | 'completed';
   due?: string;
-  updated: string;
+  updated: string; // RFC 3339 timestamp
   links?: Array<{
     type: string; // "email"
+    description: string;
     link: string; // URL to the Gmail thread
   }>;
+  webViewLink: string; // URL to the Google Tasks
 }
 
 // Specific fields to watch in Google Calendar Response
