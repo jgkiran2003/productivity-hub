@@ -2,14 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-interface GoogleTask {
-  id: string;
-  title: string;
-  notes?: string;
-  status: string;
-  due?: string;
-  taskListTitle: string;
-}
+import { GoogleTask } from '@/data/googleTasksSchema';
 
 export default function GoogleTasksColumn() {
   const [tasks, setTasks] = useState<GoogleTask[]>([]);
@@ -55,7 +48,7 @@ export default function GoogleTasksColumn() {
   }
 
   return (
-    <div className="space-y-4 p-6 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10">
+    <div className="h-full overflow-y-auto space-y-4 p-6 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10">
       <h2 className="text-xl font-bold">Google Tasks</h2>
       {tasks.length === 0 ? (
         <p>No tasks found.</p>

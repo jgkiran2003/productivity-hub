@@ -7,7 +7,7 @@ export default function GoogleSignInButton() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        scopes: 'https://www.googleapis.com/auth/tasks',
+        scopes: 'https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/calendar.readonly',
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
