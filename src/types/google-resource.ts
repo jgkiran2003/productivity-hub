@@ -19,12 +19,12 @@ export interface GoogleEventResource {
   id: string;
   summary: string;
   description?: string;
-  start: { dateTime?: string; date?: string };
-  end: { dateTime?: string; date?: string };
+  start: { dateTime?: string; date?: string; timeZone?: string };
+  end: { dateTime?: string; date?: string; timeZone?: string };
   status: 'confirmed' | 'tentative' | 'cancelled';
   extendedProperties?: {
-    private?: {
-      nexus_priority?: string; // Hidden Nexus data stored in Google
+    private?: { // Nexus data stored in google calendar 
+      nexus_data?: string;
     };
   };
 }
