@@ -6,31 +6,22 @@ export interface NexusTask {
   user_id: string;
   google_task_id: string;
   title: string;
-  notes?: string;
-  due_date?: string; // ISO String
   status: 'needsAction' | 'completed';
+  notes?: string;
+  due_date?: string; 
+  updated_at?: string;
   completed_at?: string;
-  
-  // Nexus Specifics
-  source: 'google_tasks' | 'gmail' | 'manual';
-  nexus_priority: number; // 1-10 priority
-  category: 'NUS' | 'Pickleball' | 'Finance' | 'General';
-  related_email_id?: string; // Links to "5 flagged emails"
 }
 
 export interface NexusEvent {
-  id: string;
+  id: string; // Supabase UUID
   user_id: string;
   google_event_id: string;
   summary: string;
   description?: string;
-  location?: string;
-  start_time: string;
-  end_time: string;
+  status: string;
+  start: string;
+  end: string;
   is_all_day: boolean;
-  
-  // Nexus Specifics
-  nexus_context?: string; // AI summary
-  is_nus_deadline: boolean; // Flag for academic tracking
-  color_code?: string;
+  nexus_data?: string;
 }

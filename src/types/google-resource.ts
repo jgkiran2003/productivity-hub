@@ -4,8 +4,9 @@ export interface GoogleTaskResource {
   title: string;
   notes?: string;
   status: 'needsAction' | 'completed';
-  due?: string;
-  updated: string; // RFC 3339 timestamp
+  due?: string; // RFC 3339 timestamp
+  updated?: string; // RFC 3339 timestamp
+  completed?: string; // RFC 3339 timestamp
   links?: Array<{
     type: string; // "email"
     description: string;
