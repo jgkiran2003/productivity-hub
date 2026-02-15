@@ -1,31 +1,43 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-
-import { GoogleTask } from '@/data/googleTasksSchema';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabase/client'; 
+import { NexusTask } from '@/types/nexus'; 
 
 export default function GoogleTasksColumn() {
-  const [tasks, setTasks] = useState<GoogleTask[]>([]);
+  const [tasks, setTasks] = useState<NexusTask[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchGoogleTasks() {
+    async function fetchNexusTasks() {
       try {
-        const response = await fetch('/api/google-tasks/list');
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to fetch tasks');
+        setLoading(true);
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+          setError('User not authenticated.');
+          setLoading(false);
+          return;
         }
-        const data: GoogleTask[] = await response.json();
-        setTasks(data);
+
+        const { data, error } = await supabase
+          .from('tasks')
+          .select('*')
+          .eq('user_id', user.id);
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        setTasks(data || []);
       } catch (err: any) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     }
-    fetchGoogleTasks();
+    fetchNexusTasks();
   }, []);
 
   if (loading) {
@@ -55,7 +67,7 @@ export default function GoogleTasksColumn() {
       ) : (
         <ul className="space-y-3">
           {tasks.map((task) => (
-            <li key={task.id} className="relative p-3 bg-white/10 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+            <li key={task.google_task_id} className="relative p-3 bg-white/10 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
               {task.status === 'completed' && (
                 <div className="absolute top-0 left-0 w-full h-full bg-green-500/10 rounded-lg flex items-center justify-center pointer-events-none">
                   <span className="text-green-500 text-lg font-bold">✓ COMPLETED</span>
@@ -63,9 +75,9 @@ export default function GoogleTasksColumn() {
               )}
               <h3 className="font-semibold text-lg text-white mb-1">{task.title}</h3>
               {task.notes && <p className="text-sm text-gray-300 truncate mb-1">{task.notes}</p>}
-              {task.due && (
+              {task.due_date && (
                 <p className="text-xs text-gray-400 mb-1">
-                  Due: {new Date(task.due).toLocaleDateString()}
+                  Due: {new Date(task.due_date).toLocaleDateString()}
                 </p>
               )}
             </li>

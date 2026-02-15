@@ -1,30 +1,44 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { GoogleCalendarEvent } from '@/data/googleCalendarSchema';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabase/client';
+import { NexusEvent } from '@/types/nexus';
 
 export default function GoogleCalendarColumn() {
-  const [events, setEvents] = useState<GoogleCalendarEvent[]>([]);
+  const [events, setEvents] = useState<NexusEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchGoogleCalendarEvents() {
+    async function fetchNexusEvents() {
       try {
-        const response = await fetch('/api/google-calendar/list');
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to fetch calendar events');
+        setLoading(true);
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+          setError('User not authenticated.');
+          setLoading(false);
+          return;
         }
-        const data: GoogleCalendarEvent[] = await response.json();
-        setEvents(data);
+
+        const { data, error } = await supabase
+          .from('calendar_events')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('start_time', { ascending: true });
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        setEvents(data || []);
       } catch (err: any) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     }
-    fetchGoogleCalendarEvents();
+    fetchNexusEvents();
   }, []);
 
   if (loading) {
@@ -54,27 +68,17 @@ export default function GoogleCalendarColumn() {
       ) : (
         <ul className="space-y-3">
           {events.map((event) => (
-            <li key={event.id} className="p-3 bg-white/10 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+            <li key={event.google_event_id} className="p-3 bg-white/10 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
               <h3 className="font-semibold text-lg text-white mb-1">{event.summary}</h3>
-              {event.start && (event.start.dateTime || event.start.date) && (
+              {event.start_time && (
                 <p className="text-xs text-gray-400 mb-1">
-                  Start: {new Date(event.start.dateTime || event.start.date!).toLocaleString()}
+                  Start: {new Date(event.start_time).toLocaleString()}
                 </p>
               )}
-              {event.end && (event.end.dateTime || event.end.date) && (
+              {event.end_time && (
                 <p className="text-xs text-gray-400 mb-1">
-                  End: {new Date(event.end.dateTime || event.end.date!).toLocaleString()}
+                  End: {new Date(event.end_time).toLocaleString()}
                 </p>
-              )}
-              {event.htmlLink && (
-                <a
-                  href={event.htmlLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-400 hover:underline text-sm"
-                >
-                  View Event
-                </a>
               )}
             </li>
           ))}
