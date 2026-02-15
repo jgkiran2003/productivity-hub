@@ -134,7 +134,7 @@ export async function syncGoogleResources(userId: string) {
       // Update last_tasks_sync_at in profiles table
       const { error: updateSyncTimeError } = await supabase
         .from('profiles')
-        .upsert({ id: userId, last_sync_at: currentTimestamp }, { onConflict: 'id' });
+        .upsert({ id: userId, last_sync_time: currentTimestamp }, { onConflict: 'id' });
 
       if (updateSyncTimeError) {
         console.error('Sync Engine - Error updating last_tasks_sync_at for user:', userId, updateSyncTimeError);
@@ -213,7 +213,7 @@ export async function syncGoogleResources(userId: string) {
         .upsert({
           id: userId,
           calendar_sync_token: newCalendarSyncToken,
-          last_sync_at: currentTimestamp,
+          last_sync_time: currentTimestamp,
         }, { onConflict: 'id' });
 
       if (updateSyncTokenError) {
