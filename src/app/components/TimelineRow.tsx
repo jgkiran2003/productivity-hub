@@ -23,7 +23,7 @@ export default function TimelineRow({ item, showDateSeparator, dateString }: Tim
     <div key={item.id} className="relative">
       <div className="flex flex-col">
         <span className="text-xs font-mono text-slate-400">
-          {itemDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          {itemDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false})}
         </span>
         <div className="flex items-center gap-2">
           {item.type === 'event' ? <CalendarIcon size={14}/> : <CheckCircle2 size={14}/>}

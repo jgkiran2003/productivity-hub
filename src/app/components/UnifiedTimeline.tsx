@@ -26,7 +26,7 @@ export default function UnifiedTimeline({ events, tasks }: UnifiedTimelineProps)
       <div className="relative border-l-2 ml-1 pl-4 space-y-8">
         {mergedData.map((item: TimelineItem) => {
           const itemDate = new Date(getItemDate(item));
-          const currentDateString = itemDate.toLocaleDateString();
+          const currentDateString = itemDate.toLocaleDateString('en-GB');
 
           const showDateSeparator = lastDate !== currentDateString;
           if (showDateSeparator) {
