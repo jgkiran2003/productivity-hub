@@ -11,6 +11,7 @@ export interface NexusTask {
   due_date?: string; 
   updated_at?: string;
   completed_at?: string;
+  created_at?: string;
 }
 
 export interface NexusEvent {
@@ -20,8 +21,10 @@ export interface NexusEvent {
   summary: string;
   description?: string;
   status: string;
-  start: string;
-  end: string;
+  start_time: string;
+  end_time: string;
   is_all_day: boolean;
   nexus_data?: string;
+  updated_at?: string;
+  created_at?: string;
 }
