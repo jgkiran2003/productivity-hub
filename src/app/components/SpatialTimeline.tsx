@@ -1,27 +1,40 @@
 'use client';
 
-import { NexusEvent, NexusTask } from '@/types/nexus';
+import { NexusEvent, NexusTask, NexusItem } from '@/types/nexus';
+import { TimelineData } from '@/utils/timeline-utils';
 
 interface SpatialTimelineProps {
-  events: NexusEvent[];
-  tasks: NexusTask[];
+  unifiedData: { item: NexusItem; data: TimelineData }[]; 
 }
 
 const HOUR_HEIGHT_PX = 120; // 1 hour = 120 pixels
 
-export default function SpatialTimeline({ events, tasks }: SpatialTimelineProps) {
-  // Filter tasks into pending (no specific time) and timed (with due_date having a time)
-  const pendingTasks = tasks.filter(task => {
-    // Check if due_date has a time component or if it's just a date
-    return !task.due_date || (task.due_date && !task.due_date.includes('T'));
-  });
+export default function SpatialTimeline({ unifiedData }: SpatialTimelineProps) { 
+  const allItems: NexusItem[] = unifiedData.map(itemData => itemData.item) || [];
 
-  const timedTasks = tasks.filter(task => task.due_date && task.due_date.includes('T'));
+  // Filter tasks into pending (no specific time) and timed (with due_date having a time)
+  const pendingTasks = allItems.filter(item => {
+    if ('google_task_id' in item) {
+      // Check if due_date has a time component or if it's just a date
+      return !item.due_date || (item.due_date && !item.due_date.includes('T'));
+    }
+    return false;
+  }) as NexusTask[];
+
+  const timedItems = allItems.filter(item => {
+    if ('google_event_id' in item) {
+      return true; // Events are always timed
+    }
+    if ('google_task_id' in item) {
+      return item.due_date && item.due_date.includes('T'); // Tasks are timed if due_date has time
+    }
+    return false;
+  });
 
   // Group events and timed tasks by day for easier rendering
   const itemsByDay: { [key: string]: Array<NexusEvent | NexusTask> } = {};
 
-  [...events, ...timedTasks].forEach(item => {
+  timedItems.forEach(item => {
     let dateKey: string;
     if ('start_time' in item) { // NexusEvent
       dateKey = new Date(item.start_time).toISOString().split('T')[0];

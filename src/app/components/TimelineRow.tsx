@@ -1,5 +1,5 @@
 import { CalendarIcon, CheckCircle2 } from "lucide-react";
-import { NexusItem, NexusEvent, NexusTask } from "@/types/nexus"; // Added NexusEvent, NexusTask
+import { NexusItem, NexusEvent, NexusTask } from "@/types/nexus";
 
 interface TimelineRowProps {
   item: NexusItem;
@@ -11,13 +11,13 @@ export default function TimelineRow({ item, showDateSeparator, dateString }: Tim
   let itemDateTime: Date;
   let title: string;
 
-  if ('google_event_id' in item) { // It's a NexusEvent
+  if ('google_event_id' in item) { 
     const eventItem = item as NexusEvent;
     itemDateTime = new Date(eventItem.start_time);
     title = eventItem.summary || eventItem.description || 'Untitled Event';
-  } else { // It's a NexusTask
+  } else { 
     const taskItem = item as NexusTask;
-    itemDateTime = taskItem.due_date ? new Date(taskItem.due_date) : new Date(); // Fallback if no due_date
+    itemDateTime = taskItem.due_date ? new Date(taskItem.due_date) : new Date();
     title = taskItem.title || 'Untitled Task';
   }
 
@@ -28,7 +28,7 @@ export default function TimelineRow({ item, showDateSeparator, dateString }: Tim
         <span className="bg-slate-800 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md z-10">
           {dateString}
         </span>
-        <div className="absolute w-full h-px bg-slate-700"></div> {/* Line divider */}
+        <div className="absolute w-full h-px bg-slate-700"></div> 
       </div>
     )}
     <div key={item.id} className="relative">

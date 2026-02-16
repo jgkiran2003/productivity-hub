@@ -1,22 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import ListTimeline from './components/ListTimeline';
 import GoogleTasksColumn from "./components/GoogleTasksColumn";
 import GoogleCalendarColumn from "./components/GoogleCalendarColumn";
 import CollapsibleSidebar from "./components/CollapsibleSidebar";
-import { supabase } from '@/lib/supabase/client';
-import { NexusEvent, NexusTask } from '@/types/nexus'; 
 import SpatialTimeline from "./components/SpatialTimeline";
+
 import { useUIStore } from '@/store/uiStore';
+import { useTimeline } from '@/hooks/useTimeline'; 
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
   const { isSidebarOpen, viewMode, toggleSidebar, setViewMode } = useUIStore();
-
-  const [nexusEvents, setNexusEvents] = useState<NexusEvent[]>([]);
-  const [nexusTasks, setNexusTasks] = useState<NexusTask[]>([]);
-  const [loadingNexusData, setLoadingNexusData] = useState(true);
+  const { data: unifiedData, isLoading, error } = useTimeline(); 
 
   useEffect(() => {
     setMounted(true);
@@ -35,52 +33,20 @@ export default function Home() {
       .catch(error => {
         console.error('Error triggering background sync:', error);
       });
+  }, []);
 
-    // Fetch data from Supabase for the timeline
-    async function fetchNexusData() {
-      setLoadingNexusData(true);
-      const { data: { user } = { user: null } } = await supabase.auth.getUser();
-
-      if (!user) {
-        console.warn('No user found, cannot fetch Nexus data.');
-        setLoadingNexusData(false);
-        return;
-      }
-
-      // Fetch Nexus Events
-      const { data: eventsData, error: eventsError } = await supabase
-        .from('calendar_events')
-        .select('*')
-        .eq('user_id', user.id);
-
-      if (eventsError) {
-        console.error('Error fetching Nexus events:', eventsError);
-      } else {
-        setNexusEvents(eventsData || []);
-      }
-
-      // Fetch Nexus Tasks
-      const { data: tasksData, error: tasksError } = await supabase
-        .from('tasks')
-        .select('*')
-        .eq('user_id', user.id);
-
-      if (tasksError) {
-        console.error('Error fetching Nexus tasks:', tasksError);
-      } else {
-        setNexusTasks(tasksData || []);
-      }
-      setLoadingNexusData(false);
-    }
-
-    fetchNexusData();
-  }, []); 
-
-  // Display loading state for timeline data
-  if (loadingNexusData) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-black text-white">
         Loading your Nexus data...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-black text-white">
+        Error: {error.message}
       </div>
     );
   }
@@ -143,9 +109,9 @@ export default function Home() {
 
           <div className="bg-white/[0.03] backdrop-blur-xl rounded-3xl p-6 border border-white/10 shadow-2xl">
             {viewMode === 'list' ? (
-              <ListTimeline events={nexusEvents} tasks={nexusTasks} /> 
+              <ListTimeline unifiedData={unifiedData ?? []} /> 
             ) : (
-              <SpatialTimeline events={nexusEvents} tasks={nexusTasks} /> 
+              <SpatialTimeline unifiedData={unifiedData ?? []} /> 
             )}
           </div>
         </div>

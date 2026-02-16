@@ -1,15 +1,13 @@
-import React from 'react';
 import { NexusEvent, NexusTask, NexusItem } from '@/types/nexus'; 
 import TimelineRow from "./TimelineRow";
+import { TimelineData } from '@/utils/timeline-utils';
 
 interface ListTimelineProps {
-  events: NexusEvent[];
-  tasks: NexusTask[];
+  unifiedData: { item: NexusItem; data: TimelineData }[];
 }
 
-const ListTimeline: React.FC<ListTimelineProps> = ({ events, tasks }) => {
-  // Combine events and tasks and filter into scheduled and unscheduled
-  const allItems: NexusItem[] = [...events, ...tasks];
+export default function ListTimeline({ unifiedData }: ListTimelineProps) {
+  const allItems: NexusItem[] = unifiedData.map(itemData => itemData.item) || [];
 
   const scheduledItems = allItems
     .filter(item => {
@@ -44,7 +42,6 @@ const ListTimeline: React.FC<ListTimelineProps> = ({ events, tasks }) => {
     });
 
   const unscheduledTasks = allItems.filter(item => {
-    // Tasks are unscheduled if they have a due_date without a time component or no due_date
     if ('google_task_id' in item) {
       if (!item.due_date) return true;
       const dueDate = new Date(item.due_date);
@@ -108,5 +105,3 @@ const ListTimeline: React.FC<ListTimelineProps> = ({ events, tasks }) => {
     </div>
   );
 };
-
-export default ListTimeline;
