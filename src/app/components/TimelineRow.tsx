@@ -1,14 +1,25 @@
 import { CalendarIcon, CheckCircle2 } from "lucide-react";
-import { TimelineItem } from "../../types";
+import { NexusItem, NexusEvent, NexusTask } from "@/types/nexus"; // Added NexusEvent, NexusTask
 
 interface TimelineRowProps {
-  item: TimelineItem;
+  item: NexusItem;
   showDateSeparator: boolean;
   dateString: string;
 }
 
 export default function TimelineRow({ item, showDateSeparator, dateString }: TimelineRowProps) {
-  const itemDate = new Date(item.type === 'event' ? item.start : item.due);
+  let itemDateTime: Date;
+  let title: string;
+
+  if ('google_event_id' in item) { // It's a NexusEvent
+    const eventItem = item as NexusEvent;
+    itemDateTime = new Date(eventItem.start_time);
+    title = eventItem.summary || eventItem.description || 'Untitled Event';
+  } else { // It's a NexusTask
+    const taskItem = item as NexusTask;
+    itemDateTime = taskItem.due_date ? new Date(taskItem.due_date) : new Date(); // Fallback if no due_date
+    title = taskItem.title || 'Untitled Task';
+  }
 
   return (
   <>
@@ -23,11 +34,11 @@ export default function TimelineRow({ item, showDateSeparator, dateString }: Tim
     <div key={item.id} className="relative">
       <div className="flex flex-col">
         <span className="text-xs font-mono text-slate-400">
-          {itemDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false})}
+          {itemDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false})}
         </span>
         <div className="flex items-center gap-2">
-          {item.type === 'event' ? <CalendarIcon size={14}/> : <CheckCircle2 size={14}/>}
-          <span className="font-semibold text-slate-100">{item.title}</span>
+          {'google_event_id' in item ? <CalendarIcon size={14}/> : <CheckCircle2 size={14}/>}
+          <span className="font-semibold text-slate-100">{title}</span>
         </div>
       </div>
     </div>

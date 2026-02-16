@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import UnifiedTimeline from "./components/UnifiedTimeline";
+import ListTimeline from './components/ListTimeline';
 import GoogleTasksColumn from "./components/GoogleTasksColumn";
 import GoogleCalendarColumn from "./components/GoogleCalendarColumn";
 import CollapsibleSidebar from "./components/CollapsibleSidebar";
@@ -141,7 +141,7 @@ export default function Home() {
 
           <div className="bg-white/[0.03] backdrop-blur-xl rounded-3xl p-6 border border-white/10 shadow-2xl">
             {viewMode === 'list' ? (
-              <UnifiedTimeline events={nexusEvents} tasks={nexusTasks} /> 
+              <ListTimeline events={nexusEvents} tasks={nexusTasks} /> 
             ) : (
               <SpatialTimeline events={nexusEvents} tasks={nexusTasks} /> 
             )}
