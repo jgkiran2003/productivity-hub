@@ -8,17 +8,19 @@ import CollapsibleSidebar from "./components/CollapsibleSidebar";
 import { supabase } from '@/lib/supabase/client';
 import { NexusEvent, NexusTask } from '@/types/nexus'; 
 import SpatialTimeline from "./components/SpatialTimeline";
+import { useUIStore } from '@/store/uiStore';
 
 export default function Home() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'list' | 'spatial'>('list');
+  const [mounted, setMounted] = useState(false);
+  const { isSidebarOpen, viewMode, toggleSidebar, setViewMode } = useUIStore();
+
   const [nexusEvents, setNexusEvents] = useState<NexusEvent[]>([]);
   const [nexusTasks, setNexusTasks] = useState<NexusTask[]>([]);
   const [loadingNexusData, setLoadingNexusData] = useState(true);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // Trigger background sync
