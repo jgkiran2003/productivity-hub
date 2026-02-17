@@ -3,6 +3,7 @@ import SimpleEventTaskList from './SimpleEventTaskList';
 import { useWorkspaceStore } from '@/store/workspaceStore';
 import { NexusItem } from '@/types/nexus';
 import { TimelineData } from '@/utils/timeline-utils';
+import GoogleSignInButton from '../GoogleSignInButton';
 
 interface SidebarProps {
   unifiedData: { item: NexusItem; data: TimelineData }[];
@@ -18,7 +19,10 @@ export default function Sidebar({ unifiedData }: SidebarProps) {
       isMainStageExpanded ? 'w-0 opacity-0 overflow-hidden' : 'w-1/3 min-w-[320px] p-4'
     }`}>
       <div className="flex justify-between items-center mb-6 shrink-0">
-        <h2 className="text-xl font-bold text-white tracking-tight">Nexus Inbox</h2> 
+        <div className="flex items-center gap-2">
+          <h2 className="text-xl font-bold text-white tracking-tight">Nexus Inbox</h2>
+          <GoogleSignInButton />
+        </div>
         <button
           onClick={toggleMainStage}
           className="px-3 py-1 bg-blue-600 text-xs font-bold uppercase tracking-wider text-white rounded-md hover:bg-blue-500 transition-colors"
